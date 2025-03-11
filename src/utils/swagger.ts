@@ -16,8 +16,12 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Development server',
+        //Prod
+        url: 'https://book-management-service-6awe.onrender.com',
+        description: 'Production server',
+        //local
+        // url: 'http://localhost:3000',
+        // description: 'Development server',
       },
     ],
     components: {
