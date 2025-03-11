@@ -1,0 +1,51 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int             @id @default(autoincrement())
+  username     String          @unique
+  password     String
+  isAdmin      Boolean         @default(false)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  borrowings   Borrowing[]
+  encryptedNotes String?       // For demonstration of encryption
+
+  @@index([username])
+}
+
+model Book {
+  id           Int             @id @default(autoincrement())
+  title        String
+  author       String
+  genre        String
+  publishedYear Int
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  borrowings   Borrowing[]
+
+  @@index([title])
+  @@index([author])
+}
+
+model Borrowing {
+  id           Int             @id @default(autoincrement())
+  userId       Int
+  bookId       Int
+  borrowDate   DateTime        @default(now())
+  returnDate   DateTime?
+  isReturned   Boolean         @default(false)
+  user         User            @relation(fields: [userId], references: [id])
+  book         Book            @relation(fields: [bookId], references: [id])
+
+  @@index([userId])
+  @@index([bookId])
+  @@index([isReturned])
+}
