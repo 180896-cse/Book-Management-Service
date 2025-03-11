@@ -1,16 +1,56 @@
-import express, { Express } from 'express';
-import 'dotenv/config';
-import router from './routes/routes';
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes';
 
-const PORT: string = process.env.PORT || '3000';
-const app: Express = express();
+// Route files
+import bookRoutes from './routes/bookRoutes';
+import borrowRoutes from './routes/borrowRoutes';
+import { specs, swaggerUi } from './utils/swagger';
 
-app.use('/', router);
+dotenv.config();
 
-async function main(): Promise<void> {
-  app.listen(PORT, () => {
-    console.log(`Server is up over http://localhost:${PORT}`);
-  });
-}
+const app = express();
+const PORT = process.env.PORT;
 
-main();
+// Middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// API Routes
+app.use('/api/users', userRoutes);
+app.use('/api/books', bookRoutes);
+app.use('/api/borrowings', borrowRoutes);
+
+// Swagger Documentation
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true }),
+);
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is running' });
+});
+
+// Error handling middleware
+app.use(
+  (
+    err: any,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction,
+  ) => {
+    console.error(err.stack);
+    res.status(500).json({
+      message: 'Something went wrong!',
+      error: process.env.NODE_ENV === 'development' ? err.message : undefined,
+    });
+  },
+);
+app.listen(PORT, () => {
+  console.log(`Server is live Over http://localhost:${PORT}`);
+});
+export default app;
