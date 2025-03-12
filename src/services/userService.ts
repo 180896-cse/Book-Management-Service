@@ -145,7 +145,7 @@ class UserService {
       return ('User promoted to admin successfully');
     } catch (error) {
       console.error('save notes service error:', error);
-      return error;
+      return (error);
     }
   }
 }
