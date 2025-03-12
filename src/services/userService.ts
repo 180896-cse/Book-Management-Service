@@ -33,14 +33,14 @@ class UserService {
         newUser.isAdmin,
       );
 
-      return {
+      return ({
         user: {
           id: newUser.id,
           username: newUser.username,
           isAdmin: newUser.isAdmin,
         },
         token,
-      };
+      });
     } catch (error) {
       console.error('Registration error service:', error);
       return error;
@@ -99,14 +99,14 @@ class UserService {
         throw new Error('User not found');
       }
 
-      return {
+      return ({
         user: {
           ...userData,
           notes: userData.encryptedNotes
             ? decryptText(userData.encryptedNotes)
             : null,
         },
-      };
+      });
     } catch (error) {
       console.error('get profile service error:', error);
       return error;
