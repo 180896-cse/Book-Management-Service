@@ -25,7 +25,7 @@ app.use('/api/borrowings', borrowRoutes);
 
 // Swagger Documentation
 app.use(
-  '/api-docs',
+  '/',
   swaggerUi.serve,
   swaggerUi.setup(specs, { explorer: true }),
 );
