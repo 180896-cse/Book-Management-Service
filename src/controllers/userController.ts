@@ -34,7 +34,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
 
-    const data = userService.userLogin(username, password)
+    const data = await userService.userLogin(username, password)
       .catch((err: Error) => {
         throw err
       })
