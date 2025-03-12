@@ -100,7 +100,7 @@ export const promoteToAdmin = async (req: Request, res: Response) => {
 
     const data = await userService.changeUserType(userId)
       .catch((err) => {
-        throw err
+        res.status(500).json({ message: err })
       })
     res.json({ message: data });
   } catch (error) {
