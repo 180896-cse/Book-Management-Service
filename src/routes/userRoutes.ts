@@ -180,7 +180,7 @@ router.post('/notes', authenticate, notesValidation, userController.saveNotes);
 /**
  * @swagger
  * /api/users/promote:
- *   post:
+ *   patch:
  *     summary: Promote a user to admin
  *     tags: [Users]
  *     security:
@@ -209,6 +209,6 @@ router.post('/notes', authenticate, notesValidation, userController.saveNotes);
  *       500:
  *         description: Server error
  */
-router.post('/promote', authenticate, isAdmin, userController.promoteToAdmin);
+router.patch('/promote', authenticate, isAdmin, userController.promoteToAdmin);
 
 export default router;
