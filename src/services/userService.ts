@@ -69,14 +69,14 @@ class UserService {
       // Generate JWT token
       const token: string = generateToken(user.id, user.username, user.isAdmin);
 
-      return {
+      return ({
         user: {
           id: user.id,
           username: user.username,
           isAdmin: user.isAdmin,
         },
         token,
-      };
+      });
     } catch (error) {
       console.error('Login service error:', error);
       return error;
