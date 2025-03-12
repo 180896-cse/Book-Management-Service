@@ -23,6 +23,11 @@ app.use('/api/users', userRoutes);
 app.use('/api/books', bookRoutes);
 app.use('/api/borrowings', borrowRoutes);
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Server is running' });
+});
+
 // Swagger Documentation
 app.use(
   '/',
@@ -30,10 +35,7 @@ app.use(
   swaggerUi.setup(specs, { explorer: true }),
 );
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Server is running' });
-});
+
 
 // Error handling middleware
 app.use(
