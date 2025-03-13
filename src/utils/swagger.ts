@@ -1,6 +1,12 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
+
+let routes = './src/routes/*.ts'
+if (process.env.DEPLOYMENT == 'yes'){
+  routes = './routes/*.ts'
+}
+
 // Swagger definition
 const options = {
   definition: {
@@ -27,7 +33,7 @@ const options = {
     components: {
       securitySchemes: {
         bearerAuth: {
-          type: 'https',
+          type: 'http',
           scheme: 'bearer',
           bearerFormat: 'JWT',
         },
@@ -140,7 +146,7 @@ const options = {
       },
     ],
   },
-  apis: ['./routes/*.ts'], // Path to the API routes files
+  apis: [routes], // Path to the API routes files
 };
 
 const specs = swaggerJsdoc(options);
