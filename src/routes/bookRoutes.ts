@@ -11,6 +11,41 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /api/books/search:
+ *   get:
+ *     summary: Search books by title or author
+ *     tags: [Books]
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Search query
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of books per page
+ *     responses:
+ *       200:
+ *         description: List of books matching the search query
+ *       400:
+ *         description: Search query is required
+ *       500:
+ *         description: Server error
+ */
+router.get('/search', searchValidation, bookController.searchBooks);
+
+/**
+ * @swagger
  * /api/books:
  *   post:
  *     summary: Create a new book
@@ -86,7 +121,7 @@ router.post(
  *       500:
  *         description: Server error
  */
-router.get('/', bookController.getAllBooks);
+router.get('/', authenticate,bookController.getAllBooks);
 
 /**
  * @swagger
@@ -109,7 +144,7 @@ router.get('/', bookController.getAllBooks);
  *       500:
  *         description: Server error
  */
-router.get('/:id', bookIdValidation, bookController.getBookById);
+router.get('/:id', authenticate,bookController.getBookById);
 
 /**
  * @swagger
@@ -210,40 +245,7 @@ router.delete(
   bookController.deleteBook,
 );
 
-/**
- * @swagger
- * /api/books/search:
- *   get:
- *     summary: Search books by title or author
- *     tags: [Books]
- *     parameters:
- *       - in: query
- *         name: q
- *         required: true
- *         schema:
- *           type: string
- *         description: Search query
- *       - in: query
- *         name: page
- *         schema:
- *           type: integer
- *           default: 1
- *         description: Page number
- *       - in: query
- *         name: limit
- *         schema:
- *           type: integer
- *           default: 10
- *         description: Number of books per page
- *     responses:
- *       200:
- *         description: List of books matching the search query
- *       400:
- *         description: Search query is required
- *       500:
- *         description: Server error
- */
-router.get('/search', searchValidation, bookController.searchBooks);
+
 
 /**
  * @swagger
@@ -264,6 +266,6 @@ router.get('/search', searchValidation, bookController.searchBooks);
  *       500:
  *         description: Server error
  */
-router.get('/stats/most-borrowed', bookController.getMostBorrowedBooks);
+router.get('/stats/most-borrowed', authenticate,bookController.getMostBorrowedBooks);
 
 export default router;
